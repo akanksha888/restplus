@@ -22,10 +22,6 @@ api = Api(app, version='1.0', title='Student API',
 )
 
 
-
-
-
-
 ns = api.namespace('students', description='Student operations')
 degree_ns = api.namespace('degrees', description='Degree operations')
 
@@ -42,6 +38,7 @@ student = api.model('Student', {
     'name': fields.String(required=True, description='student name '),
     'registration_no': fields.Integer(required=True, description='student Registration Number'),
     'year': fields.Integer(required=True, description='year of degree'),
+    #'degree_id':fields.Integer
     #'degree':fields.List(fields.Nasted(degree))
 })
 
