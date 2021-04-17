@@ -2,19 +2,19 @@ from flask import Flask
 from flask_restplus import Api, Resource, fields,marshal
 from werkzeug.contrib.fixers import ProxyFix
 from db import db
-from flask_sqlalchemy import SQLAlchemy
-from model.student import StudentDAO
-from model.degree import DegreeDAO
+from model.student import StudentModel, StudentDAO
+from model.degree import DegreeModel, DegreeDAO
 
 # App definition.
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://postgres:akan@localhost:5432/postgres'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']=False
 app.wsgi_app = ProxyFix(app.wsgi_app)
-db = SQLAlchemy(app)
 
 
-
+@app.before_first_request
+def create_tables():
+    db.create_all()
 
 # Api definition.
 api = Api(app, version='1.0', title='Student API',
@@ -135,4 +135,5 @@ class Degree(Resource):
 
 
 if __name__ == '__main__':
+    db.init_app(app)
     app.run(debug=True)
